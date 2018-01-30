@@ -43,6 +43,10 @@
               <v-btn block flat @click="login">LOGIN</v-btn>
             </v-layout>
           </v-card-actions>
+          <v-snackbar :timeout="5000" color="error" v-model="snackbar">
+            {{ lastError }}
+            <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+          </v-snackbar>
         </v-card>
       </v-flex>
     </v-layout>
@@ -50,30 +54,30 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Vue from 'vue'
+import _ from 'lodash'
 export default {
   name: 'Login',
   data () {
     return {
       username: '',
       password: '',
-      showPassword: false
+      showPassword: false,
+      snackbar: false,
+      lastError: ''
     }
   },
   methods: {
     login () {
-      axios.post('http://localhost:3000/login', {
-        username: this.username,
-        password: this.password
-      }).then((res) => {
-        if (res.data.status === 'OK') {
-          console.log('login OK', res.data)
-          this.$router.push('/')
-        } else {
-          console.log('login FAIL', res.data)
-        }
-      }).catch((err) => {
-        console.log('login FAIL', err)
+      console.log(this.$session)
+      console.log(Vue.session)
+      this.$session.login(this.username, this.password).then(session => {
+        console.log('LOGIN SUCCESS', session)
+        this.$router.push('/')
+      }).catch(err => {
+        console.log(err)
+        this.lastError = _.capitalize(err.message)
+        this.snackbar = true
       })
     }
   }

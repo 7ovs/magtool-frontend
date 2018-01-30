@@ -5,12 +5,18 @@ import Login from '@/components/Login'
 
 Vue.use(Router)
 
+var checkAuth = (to, from, next) => {
+  if (Vue.session.isValid) next()
+  else next('/login')
+}
+
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
+      beforeEnter: checkAuth
     },
     {
       path: '/login',
