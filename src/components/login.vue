@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid fill-height class="blue-grey darken-4" @keyup.enter="login">
+  <v-container fluid fill-height @keyup.enter="login">
     <v-layout justify-center align-center>
       <v-flex xs12 sm7 md6 lg4>
-        <v-card md6>
+        <v-card md6 class="elevation-4">
           <v-card-title>
             <v-layout justify-center align-center>
               <h2 class="subheading">MAGTOOL LOGIN</h2>

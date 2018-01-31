@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index'
 import Login from '@/components/Login'
+import Control from '@/components/Control'
+import Links from '@/components/Links'
 
 Vue.use(Router)
 
@@ -16,7 +18,19 @@ export default new Router({
       path: '/',
       name: 'index',
       component: Index,
-      beforeEnter: checkAuth
+      beforeEnter: checkAuth,
+      children: [
+        {
+          path: '/',
+          name: 'control',
+          component: Control
+        },
+        {
+          path: '/links',
+          name: 'links',
+          component: Links
+        }
+      ]
     },
     {
       path: '/login',
