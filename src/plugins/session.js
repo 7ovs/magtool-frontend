@@ -26,15 +26,23 @@ class Session {
   }
 
   get header () {
-    if (this.$store.state.session.token) {
-      return JSON.parse(atob(this.$store.state.session.token.split('.')[0]))
+    const session = this.$store.state.session
+    if (session.token) {
+      if (session.header) return session.header
+      const header = JSON.parse(atob(this.$store.state.session.token.split('.')[0]))
+      this.$store.commit('SET_HEADER', header)
+      return header
     }
     return undefined
   }
 
   get payload () {
-    if (this.$store.state.session.token) {
-      return JSON.parse(atob(this.$store.state.session.token.split('.')[1]))
+    const session = this.$store.state.session
+    if (session.token) {
+      if (session.payload) return session.payload
+      const payload = JSON.parse(atob(this.$store.state.session.token.split('.')[1]))
+      this.$store.commit('SET_PAYLOAD', payload)
+      return payload
     }
     return undefined
   }
