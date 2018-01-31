@@ -1,3 +1,5 @@
+import config from '@/config.json'
+
 var session = null
 
 class Session {
@@ -39,7 +41,7 @@ class Session {
 
   async login (username, password) {
     return new Promise((resolve, reject) => {
-      this.$http.post('http://localhost:3000/login', {
+      this.$http.post(`${config.backend_base}/login`, {
         username: username,
         password: password
       }).then(({ data }) => {

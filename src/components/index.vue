@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import config from '@/config.json'
 export default {
   name: 'index',
   data () {
@@ -22,7 +23,7 @@ export default {
       this.$router.push('/login')
     },
     ping () {
-      this.$http.post('http://localhost:3000/command', { command: 'PING' }).then(({data}) => {
+      this.$http.post(`${config.backend_base}/command`, { command: 'PING' }).then(({data}) => {
         if (data.status === 'OK') {
           this.msg = data.data
         } else if (data.error === 'jwt expired') {

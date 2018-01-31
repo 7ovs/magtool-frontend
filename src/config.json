@@ -1,0 +1,4 @@
+{
+  "backend_base": "http://localhost:3000",
+  "regenerate_interval": 900000
+}
