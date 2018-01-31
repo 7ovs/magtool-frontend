@@ -78,8 +78,27 @@ class Session {
     this.$http.defaults.headers.common['X-Access-Token'] = token
   }
 
+  update (token) {
+    this.$store.commit('UPDATE_SESSION_TOKEN', token)
+    this.$http.defaults.headers.common['X-Access-Token'] = token
+  }
+
   async regenerate () {
-    // TODO
+    return new Promise((resolve, reject) => {
+      if (!this.isValid) return reject(new Error('current session isn\'t valid'))
+      this.$http.post(`${config.backend_base}/regen`).then(({ data }) => {
+        if (data.status === 'OK' && data.token) {
+          this.update(data.token)
+          resolve(this)
+        } else {
+          console.log('regenerate FAIL', data)
+          reject(new Error(data.error))
+        }
+      }).catch((err) => {
+        console.log('regenerate FAIL', err)
+        reject(new Error(err))
+      })
+    })
   }
 
   destroy () {

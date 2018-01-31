@@ -7,8 +7,23 @@
 </template>
 
 <script>
+import config from '@/config.json'
 export default {
-  name: 'App'
+  name: 'App',
+  mounted () {
+    this.regenerateSession()
+    setInterval(this.regenerateSession, config.regenerate_interval)
+  },
+  methods: {
+    regenerateSession () {
+      if (!this.$session.isValid) return
+      this.$session.regenerate().then(session => {
+        console.log('regenerate complite', session.token)
+      }).catch(err => {
+        console.log('regenerate failed', err)
+      })
+    }
+  }
 }
 </script>
 

@@ -15,6 +15,11 @@ const mutations = {
   RESET_SESSION_TOKEN (state) {
     console.log('RESET_SESSION_TOKEN')
     Vue.set(state, 'session', {})
+  },
+  UPDATE_SESSION_TOKEN (state, token) {
+    console.log('UPDATE_SESSION_TOKEN')
+    Vue.set(state, 'session', { token })
+  },
   SET_PAYLOAD (state, payload) {
     console.log('SET_PAYLOAD')
     Vue.set(state.session, 'payload', payload)
