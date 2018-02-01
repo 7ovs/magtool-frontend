@@ -4,6 +4,7 @@ import Index from '@/components/Index'
 import Login from '@/components/Login'
 import Control from '@/components/Control'
 import Links from '@/components/Links'
+import CreateLink from '@/components/CreateLink'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
           path: '/links',
           name: 'links',
           component: Links
+        },
+        {
+          path: '/links/create',
+          name: 'create-link',
+          component: CreateLink
         }
       ]
     },
