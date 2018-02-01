@@ -18,6 +18,8 @@ export default {
       this.$session.regenerate().then(session => {
         console.log('regenerate complite', session.token)
       }).catch(err => {
+        this.$session.logout()
+        this.$router.push('/login')
         console.log('regenerate failed', err)
       })
     }
