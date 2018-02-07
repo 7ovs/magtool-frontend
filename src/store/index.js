@@ -5,8 +5,10 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const state = {
-  session: {}
+  session: {},
+  context: {}
 }
+
 const mutations = {
   SET_SESSION_TOKEN (state, token) {
     console.log('SET_SESSION_TOKEN')
@@ -27,6 +29,26 @@ const mutations = {
   SET_HEADER (state, SET_HEADER) {
     console.log('SET_HEADER')
     Vue.set(state.session, 'SET_HEADER', SET_HEADER)
+  },
+  CREATE_CONTEXT (state, id) {
+    console.log('CREATE_CONTEXT', id)
+    Vue.set(state.context, id, {})
+  },
+  SET_CONTEXT (state, {id, path, context}) {
+    console.log('SET_CONTEXT', id, path, context)
+    Vue.set(state.context[id], path, context)
+  },
+  UPDATE_CONTEXT (state, { id, path, context }) {
+    console.log('UPDATE_CONTEXT', {id, path, context})
+    const currentContext = state.context[id][path]
+    if (currentContext) {
+      state.context[id][path] = {
+        ...currentContext,
+        ...context
+      }
+    } else {
+      state.context[id][path] = { ...context }
+    }
   }
 }
 
@@ -39,7 +61,7 @@ const store = new Vuex.Store({
   mutations,
   getters,
   actions,
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState({ paths: ['session'] })]
 })
 
 export default store
