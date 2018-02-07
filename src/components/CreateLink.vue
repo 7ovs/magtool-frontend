@@ -1,21 +1,33 @@
 <template>
   <v-container fluid class="text-xs-left">
+    <v-dialog v-model="resultDialog" max-width="640">
+      <v-card>
+        <v-card-title class="headline">Link successfully created!</v-card-title>
+        <v-card-text>
+          <v-text-field v-model="link" readonly/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat="flat" @click.native="$router.push('/links')">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-layout row class="mb-4">
       <v-flex md3 hidden-sm-and-down><v-subheader>Email</v-subheader></v-flex>
       <v-flex md5 xs12>
-        <v-text-field v-model="email" label="Email"/>
+        <v-text-field v-model="newLink.email" label="Email"/>
       </v-flex>
     </v-layout>
     <v-layout row class="mb-4">
       <v-flex md3 hidden-sm-and-down><v-subheader>Order Id</v-subheader></v-flex>
       <v-flex md3 xs12>
-        <v-text-field v-model="orderId" label="Order Id"/>
+        <v-text-field v-model="newLink.orderId" label="Order Id"/>
       </v-flex>
     </v-layout>
     <v-layout row class="mb-4">
       <v-flex md3 hidden-sm-and-down><v-subheader>Download count</v-subheader></v-flex>
       <v-flex md3 xs12>
-        <v-text-field v-model="downloadCount" label="Download count"/>
+        <v-text-field v-model="newLink.downloadCount" label="Download count"/>
       </v-flex>
     </v-layout>
     <v-layout row class="mb-4">
@@ -45,15 +57,34 @@ export default {
   name: 'CreateLink',
   data () {
     return {
-      email: '',
-      orderId: '',
-      downloadCount: 5,
+      newLink: {
+        email: 'some@email.com',
+        orderId: '123',
+        downloadCount: 5
+      },
+      link: '',
+      resultDialog: false,
       loadingTree: true,
       treeData: undefined
     }
   },
   methods: {
-    submit () {}
+    submit () {
+      const linkData = {
+        ...this.newLink,
+        files: this.tree.checked
+      }
+      this.$http.post(`${config.backend_base}/links`, { command: 'CREATE_LINK', data: linkData })
+        .then((res) => {
+          console.log('CREATE_LINK response', res.data)
+          const linkData = res.data.data
+          this.link = config.backend_base + linkData.link
+          this.resultDialog = true
+        })
+        .catch(err => {
+          console.log('CREATE_LINK failed', err)
+        })
+    }
   },
   mounted () {
     this.$http.post(`${config.backend_base}/links`, { command: 'GET_FILES_LIST' })
