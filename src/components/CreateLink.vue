@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="text-xs-left">
-    <v-dialog v-model="resultDialog" max-width="640">
+    <v-dialog v-model="resultDialog" persistent max-width="640">
       <v-card>
         <v-card-title class="headline">Link successfully created!</v-card-title>
         <v-card-text>
