@@ -72,7 +72,8 @@ export default {
     submit () {
       const linkData = {
         ...this.newLink,
-        files: this.tree.checked
+        files: this.tree.checked,
+        created_by: this.$session.payload.username
       }
       this.$http.post(`${config.backend_base}/links`, { command: 'CREATE_LINK', data: linkData })
         .then((res) => {
