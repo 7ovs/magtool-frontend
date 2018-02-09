@@ -27,7 +27,7 @@
     <v-layout row class="mb-4">
       <v-flex md3 hidden-sm-and-down><v-subheader>Download count</v-subheader></v-flex>
       <v-flex md3 xs12>
-        <v-text-field v-model="newLink.downloadCount" label="Download count"/>
+        <v-text-field v-model="newLink.downloadsLimit" label="Download count"/>
       </v-flex>
     </v-layout>
     <v-layout row class="mb-4">
@@ -60,7 +60,7 @@ export default {
       newLink: {
         email: 'some@email.com',
         orderId: '123',
-        downloadCount: 5
+        downloadsLimit: 5
       },
       link: '',
       resultDialog: false,
