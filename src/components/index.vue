@@ -44,7 +44,7 @@ export default {
   name: 'index',
   data () {
     return {
-      drawer: true,
+      drawer: false,
       msg: 'Welcome to Your Vue.js App'
     }
   },
