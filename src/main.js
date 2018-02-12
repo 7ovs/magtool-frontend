@@ -9,6 +9,7 @@ import store from './store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Session from './plugins/session'
+import 'mdi/css/materialdesignicons.css'
 
 Vue.use(VueAxios, axios)
 Vue.use(Vuetify)
