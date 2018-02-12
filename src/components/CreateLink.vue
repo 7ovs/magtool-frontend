@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="text-xs-left">
-    <v-dialog v-model="resultDialog" persistent max-width="640">
+    <!-- <v-dialog v-model="resultDialog" persistent max-width="640">
       <v-card>
         <v-card-title class="headline">Link successfully created!</v-card-title>
         <v-card-text>
@@ -11,7 +11,8 @@
           <v-btn color="green darken-1" flat="flat" @click.native="$router.push('/links')">Close</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
+    <link-dialog title="Link successfully created!" :link="linkData" @close="$router.push('/links')"/>
     <v-layout row class="mb-4">
       <v-flex md3 hidden-sm-and-down><v-subheader>Email</v-subheader></v-flex>
       <v-flex md5 xs12>
@@ -52,6 +53,7 @@
 <script>
 import config from '@/config'
 import FilesTreeNode from '@/components/FilesTreeNode'
+import LinkDialog from '@/components/LinkDialog'
 import Node from '@/classes/files-tree'
 export default {
   name: 'CreateLink',
@@ -62,7 +64,7 @@ export default {
         orderId: '123',
         downloadsLimit: 5
       },
-      link: '',
+      linkData: null,
       resultDialog: false,
       loadingTree: true,
       treeData: undefined
@@ -79,7 +81,7 @@ export default {
         .then((res) => {
           console.log('CREATE_LINK response', res.data)
           const linkData = res.data.data
-          this.link = config.backend_base + linkData.link
+          this.linkData = linkData
           this.resultDialog = true
         })
         .catch(err => {
@@ -101,7 +103,8 @@ export default {
       })
   },
   components: {
-    node: FilesTreeNode
+    node: FilesTreeNode,
+    'link-dialog': LinkDialog
   }
 }
 </script>
