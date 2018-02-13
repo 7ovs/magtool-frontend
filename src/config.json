@@ -1,4 +1,5 @@
 {
-  "backend_base": "http://api.obitel-minsk.com:4000",
-  "regenerate_interval": 900000
+  "baseUrl": "http://localhost:4000",
+  "downloadBaseUrl": "http://localhost:5000",
+  "regenerateInterval": 900000
 }

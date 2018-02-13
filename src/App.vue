@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import config from '@/config.json'
 export default {
   name: 'App',
   mounted () {
     this.regenerateSession()
-    setInterval(this.regenerateSession, config.regenerate_interval)
+    setInterval(this.regenerateSession, this.$store.state.config.regenerateInterval)
   },
   methods: {
     regenerateSession () {

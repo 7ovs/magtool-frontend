@@ -51,9 +51,8 @@
 </template>
 
 <script>
-import config from '@/config'
-import FilesTreeNode from '@/components/FilesTreeNode'
-import LinkDialog from '@/components/LinkDialog'
+import FilesTreeNode from '@/components/ui/FilesTreeNode'
+import LinkDialog from '@/components/ui/LinkDialog'
 import Node from '@/classes/files-tree'
 export default {
   name: 'CreateLink',
@@ -77,7 +76,7 @@ export default {
         files: this.tree.checked,
         created_by: this.$session.payload.username
       }
-      this.$http.post(`${config.backend_base}/links`, { command: 'CREATE_LINK', data: linkData })
+      this.$backend.links.createLink(linkData)
         .then((res) => {
           console.log('CREATE_LINK response', res.data)
           const linkData = res.data.data
@@ -90,7 +89,7 @@ export default {
     }
   },
   mounted () {
-    this.$http.post(`${config.backend_base}/links`, { command: 'GET_FILES_LIST' })
+    this.$backend.links.getFilesList()
       .then((res) => {
         this.loadingTree = false
         this.treeData = res.data.data

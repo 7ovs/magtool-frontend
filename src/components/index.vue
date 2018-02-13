@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import config from '@/config.json'
 export default {
   name: 'index',
   data () {
@@ -52,19 +51,6 @@ export default {
     logout () {
       this.$session.logout()
       this.$router.push('/login')
-    },
-    ping () {
-      this.$http.post(`${config.backend_base}/command`, { command: 'PING' }).then(({data}) => {
-        if (data.status === 'OK') {
-          this.msg = data.data
-        } else if (data.error === 'jwt expired') {
-          this.$session.logout()
-          this.$router.push('/login')
-        }
-        console.log('RESPONSE: ', data)
-      }).catch(error => {
-        console.log(error)
-      })
     }
   }
 }

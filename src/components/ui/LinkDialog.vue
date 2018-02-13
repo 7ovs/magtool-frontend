@@ -6,7 +6,15 @@
         {{ title }}
       </v-card-title>
       <v-card-text>
-        <v-text-field :value="url" readonly/>
+        <v-snackbar top :timeout="2000" color="success" v-model="clipboardSuccess">
+          Copied!
+          <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
+        <v-snackbar top :timeout="3000" color="error" v-model="clipboardFail">
+          Copy fail... :(
+          <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
+        <v-text-field :value="$backend.getDownloadUrl(link.link)" readonly/>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -15,8 +23,9 @@
           <span>Download without increment downloads counter</span>
         </v-tooltip>
         <v-tooltip top>
-          <v-btn color="light-blue darken-2" flat="flat" @click.native="cpoy" slot="activator">Copy link</v-btn>
-          <span>Copy link to clippboard</span>
+          <v-btn v-clipboard="$backend.getDownloadUrl(link.link)" @success="handleSuccess" @error="handleError"
+            color="light-blue darken-2" flat="flat" slot="activator">Copy link</v-btn>
+          <span>Copy link to clipboard</span>
         </v-tooltip>
         <v-btn color="green darken-1" flat="flat" @click.native="$emit('close')">Close</v-btn>
       </v-card-actions>
@@ -30,7 +39,9 @@ export default {
   props: ['title', 'link', 'persistent'],
   data () {
     return {
-      show: false
+      show: false,
+      clipboardSuccess: false,
+      clipboardFail: false
     }
   },
   watch: {
@@ -39,18 +50,17 @@ export default {
       else this.show = false
     }
   },
-  computed: {
-    url () {
-      return `http://localhost:5000${this.link.link}`
-    },
-    safeUrl () {
-      return `http://localhost:5000${this.link.link}?token=${this.$session.token}`
-    }
-  },
   methods: {
     copy () {},
     download () {
-      window.open(this.safeUrl)
+      window.open(this.$backend.getSafeDownloadUrl(this.link.link, this.$session.token))
+    },
+    handleSuccess (e) {
+      this.clipboardSuccess = true
+    },
+    handleError (e) {
+      this.clipboardFail = true
+      console.log(e)
     },
     onInput (value) {
       if (!value) this.$emit('close')

@@ -1,11 +1,11 @@
-import config from '@/config.json'
-
 var session = null
 
 class Session {
-  constructor (store, http) {
+  constructor (store, http, backend) {
     this.$store = store
     this.$http = http
+    this.$backend = backend
+    this.$config = store.state.config
     if (this.isValid) {
       http.defaults.headers.common['X-Access-Token'] = store.state.session.token
     } else {
@@ -49,7 +49,7 @@ class Session {
 
   async login (username, password) {
     return new Promise((resolve, reject) => {
-      this.$http.post(`${config.backend_base}/login`, {
+      this.$backend.login({
         username: username,
         password: password
       }).then(({ data }) => {
@@ -86,7 +86,7 @@ class Session {
   async regenerate () {
     return new Promise((resolve, reject) => {
       if (!this.isValid) return reject(new Error('current session isn\'t valid'))
-      this.$http.post(`${config.backend_base}/regen`).then(({ data }) => {
+      this.$backend.regen().then(({ data }) => {
         if (data.status === 'OK' && data.token) {
           this.update(data.token)
           resolve(this)
@@ -120,9 +120,9 @@ class Session {
   }
 }
 
-Session.install = (Vue, { store, http }) => {
-  session = new Session(store, http)
-  Vue.session = session
+Session.install = (Vue, { store, http, backend }) => {
+  session = new Session(store, http, backend)
+  Vue.app.session = session
   Object.defineProperties(Vue.prototype, {
     $session: {
       get () {

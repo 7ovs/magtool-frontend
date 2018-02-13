@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import config from '@/config.json'
 export default {
   name: 'Control',
   data () {
@@ -32,33 +31,36 @@ export default {
   methods: {
     ping () {
       this.pingPending = true
-      this.$http.post(`${config.backend_base}/control`, { command: 'PING' }).then(({ data }) => {
-        this.pingPending = false
-        console.log('PING COMPETE', data)
-      }).catch(err => {
-        this.pingPending = false
-        console.log('PING FAIL', err)
-      })
+      this.$backend.control.ping()
+        .then(({ data }) => {
+          this.pingPending = false
+          console.log('PING COMPETE', data)
+        }).catch(err => {
+          this.pingPending = false
+          console.log('PING FAIL', err)
+        })
     },
     getLog () {
       this.getLogPending = true
-      this.$http.post(`${config.backend_base}/control`, { command: 'GET_LOG' }).then(({ data }) => {
-        this.getLogPending = false
-        console.log('GET_LOG COMPETE', data)
-      }).catch(err => {
-        this.getLogPending = false
-        console.log('GET_LOG FAIL', err)
-      })
+      this.$backend.control.getLog()
+        .then(({ data }) => {
+          this.getLogPending = false
+          console.log('GET_LOG COMPETE', data)
+        }).catch(err => {
+          this.getLogPending = false
+          console.log('GET_LOG FAIL', err)
+        })
     },
     cleanCache () {
       this.cleanCachePending = true
-      this.$http.post(`${config.backend_base}/control`, { command: 'CLEAN_CACHE' }).then(({ data }) => {
-        this.cleanCachePending = false
-        console.log('CLEAN_CACHE COMPETE', data)
-      }).catch(err => {
-        this.cleanCachePending = false
-        console.log('CLEAN_CACHE FAIL', err)
-      })
+      this.$backend.control.cleanCache()
+        .then(({ data }) => {
+          this.cleanCachePending = false
+          console.log('CLEAN_CACHE COMPETE', data)
+        }).catch(err => {
+          this.cleanCachePending = false
+          console.log('CLEAN_CACHE FAIL', err)
+        })
     }
   }
 }

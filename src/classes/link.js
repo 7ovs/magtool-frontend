@@ -29,11 +29,11 @@ export default class Link {
 
   get filesDirInline () {
     let dirs = _.chain(this.files)
-      // .map(item => item.split('/')[0])
+      .map(item => item.split('/')[0])
       .uniq()
       .sortBy()
       .value()
-    return `${this.files.length} files: ` + dirs.join('; ')
+    return dirs.join('; ') // `${this.files.length} files: ` +
   }
 
   getFullLink (base) {

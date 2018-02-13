@@ -52,10 +52,9 @@
 </template>
 
 <script>
-import config from '@/config'
 import Link from '@/classes/link'
-import DownloadActive from '@/components/DownloadActive'
-import LinkDialog from '@/components/LinkDialog'
+import DownloadActive from '@/components/ui/DownloadActive'
+import LinkDialog from '@/components/ui/LinkDialog'
 export default {
   name: 'Links',
   data () {
@@ -81,7 +80,7 @@ export default {
     }
   },
   mounted () {
-    this.$http.post(`${config.backend_base}/links`, { command: 'GET_LINKS' })
+    this.$backend.links.getLinks()
       .then((res) => {
         console.log('GET_LINKS', res.data)
         const linksData = res.data.data
@@ -92,13 +91,10 @@ export default {
       })
   },
   methods: {
-    createLink (linkData) {
-      return `http://localhost:5000${linkData.link}?token=${this.$session.token}`
-    },
     deleteLink (linkData) {
       if (confirm(`DELETE LINK '${linkData.shortHash}'?`)) {
         this.loading = true
-        this.$http.post(`${config.backend_base}/links`, { command: 'DELETE_LINK', id: linkData.id })
+        this.$backend.links.deleteLink(linkData.id)
           .then((res) => {
             console.log('DELETE_LINK', res.data)
             const linksData = res.data.data
@@ -137,9 +133,6 @@ table.table tbody td
   white-space: nowrap
   text-overflow: ellipsis
 
-// .overflow-hidden
-//   width: 100px
-//   overflow: hidden
 .ellipsis
   margin: 0
   overflow: hidden

@@ -9,7 +9,7 @@ import CreateLink from '@/components/CreateLink'
 Vue.use(Router)
 
 var checkAuth = (to, from, next) => {
-  if (Vue.session.isValid) next()
+  if (Vue.app.session.isValid) next()
   else next('/login')
 }
 

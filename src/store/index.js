@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const state = {
+  config: {},
   session: {},
   context: {}
 }
@@ -26,9 +27,9 @@ const mutations = {
     console.log('SET_PAYLOAD')
     Vue.set(state.session, 'payload', payload)
   },
-  SET_HEADER (state, SET_HEADER) {
+  SET_HEADER (state, header) {
     console.log('SET_HEADER')
-    Vue.set(state.session, 'SET_HEADER', SET_HEADER)
+    Vue.set(state.session, 'header', header)
   },
   CREATE_CONTEXT (state, id) {
     console.log('CREATE_CONTEXT', id)
@@ -49,6 +50,10 @@ const mutations = {
     } else {
       state.context[id][path] = { ...context }
     }
+  },
+  SET_CONFIG (state, config) {
+    console.log('SET_CONFIG', config)
+    Vue.set(state, 'config', config)
   }
 }
 
