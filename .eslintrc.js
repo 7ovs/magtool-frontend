@@ -21,6 +21,19 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'space-before-function-paren': [ 'error', 'always' ],
+    'no-multi-spaces': ['error', 
+      { 
+        ignoreEOLComments: false, 
+        'exceptions': { 
+          'VariableDeclarator': true,
+          'ImportDeclaration': true
+        } 
+      } 
+    ],
+    'key-spacing': [ 'error', { 
+      "mode": "minimum"
+    } ],
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
