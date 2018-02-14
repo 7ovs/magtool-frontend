@@ -29,6 +29,14 @@ export default class Node {
     })
   }
 
+  getNodeByPath (path) {
+    console.log('getNodeByPath', path, this.children)
+    if (_.isEmpty(path)) return this
+    const child = _.find(this.children, it => it.context.name === path[0])
+    if (!child) return undefined
+    return child.getNodeByPath(path.slice(1))
+  }
+
   get context () {
     return $store.state.context[this.id][this.path]
   }
