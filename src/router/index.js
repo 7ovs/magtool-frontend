@@ -35,6 +35,11 @@ export default new Router({
           path: '/links/create',
           name: 'create-link',
           component: CreateLink
+        },
+        {
+          path: '/links/create/dublicate',
+          name: 'create-link-duplicate',
+          component: CreateLink
         }
       ]
     },

@@ -7,6 +7,9 @@ class Backend {
     this.$config = store.state.config
   }
 
+  get baseUrl () { return this.$config.baseUrl }
+  get downloadBaseUrl () { return this.$config.downloadBaseUrl }
+
   getUrl (path) { return `${this.$config.baseUrl}${path}` }
   getDownloadUrl (path) { return `${this.$config.downloadBaseUrl}${path}` }
   getSafeDownloadUrl (path, token) { return `${this.getDownloadUrl(path)}?token=${token}` }
@@ -31,7 +34,8 @@ class Backend {
       getFilesList: () => post(url, { command: 'GET_FILES_LIST' }),
       getLinks: () => post(url, { command: 'GET_LINKS' }),
       createLink: (linkData) => post(url, { command: 'CREATE_LINK', data: linkData }),
-      deleteLink: (id) => post(url, { command: 'DELETE_LINK', id })
+      deleteLink: (id) => post(url, { command: 'DELETE_LINK', id }),
+      resetCounter: (id, newCount) => post(url, { command: 'RESET_COUNTER', id, count: newCount })
     }
   }
 }

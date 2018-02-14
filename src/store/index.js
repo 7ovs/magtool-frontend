@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const state = {
+  links: {},
   config: {},
   session: {},
   context: {}
@@ -54,6 +55,14 @@ const mutations = {
   SET_CONFIG (state, config) {
     console.log('SET_CONFIG', config)
     Vue.set(state, 'config', config)
+  },
+  SET_LINK (state, linkData) {
+    console.log('SET_LINK', linkData)
+    Vue.set(state.links, linkData.id, linkData)
+  },
+  CLEAR_LINKS (state) {
+    console.log('CLEAR_LINKS')
+    Vue.set(state, 'links', {})
   }
 }
 

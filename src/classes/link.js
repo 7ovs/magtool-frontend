@@ -1,9 +1,17 @@
 import _ from 'lodash'
 import moment from 'moment'
+import $store from '@/store'
 
-export default class Link {
+export default class Link { // MUST BE READONLY!!!
   constructor (linkData) {
-    this.linkData = linkData
+    this._id = linkData.id
+    if (!$store.state.links[this._id] && $store.state.links[this._id] !== linkData) {
+      $store.commit('SET_LINK', linkData)
+    }
+  }
+
+  get linkData () {
+    return $store.state.links[this._id]
   }
 
   get id () { return this.linkData.id }
@@ -43,4 +51,26 @@ export default class Link {
   getSafeLink (base, token) {
     return `${base}${this.link}?token=${token}`
   }
+}
+
+Link.update = (linkData) => {
+  $store.commit('SET_LINK', linkData)
+}
+
+Link.clear = () => {
+  $store.commit('CLEAR_LINKS')
+}
+
+Link.load = (linksData) => {
+  return linksData.map(it => new Link(it))
+}
+
+Link.reload = (linksData) => {
+  if (!_.isEmpty($store.state.links)) Link.clear()
+  return Link.load(linksData)
+}
+
+Link.createById = (id) => {
+  if ($store.state.links[id]) return new Link($store.state.links[id])
+  return undefined
 }

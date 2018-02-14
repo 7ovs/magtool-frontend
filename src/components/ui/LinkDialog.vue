@@ -51,7 +51,6 @@ export default {
     }
   },
   methods: {
-    copy () {},
     download () {
       window.open(this.$backend.getSafeDownloadUrl(this.link.link, this.$session.token))
     },

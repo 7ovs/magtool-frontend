@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="text-xs-left">
     <link-dialog :link="linkDataDialog" :persistent="false" @close="linkDataDialog = null"/>
+    <download-counter-dialog :link="downloadCounterDialog" :persistent="false" @submit="resetCounter" @close="downloadCounterDialog = null"/>
     <v-layout column>
       <v-flex xs12>
         <v-card class="elevation-1 mb-3">
@@ -37,8 +38,18 @@
                   </td>
                   <td class="text-xs-left">
                     <v-layout row>
-                      <v-btn small @click="$router.push(`/links/edit/${props.item.hash}`)" flat icon color="teal lighten-2" class="mx-0"><v-icon>mdi-lead-pencil</v-icon></v-btn>
-                      <v-btn small @click="deleteLink(props.item)" flat icon color="brown lighten-2" class="mx-0"><v-icon>mdi-delete</v-icon></v-btn>
+                      <v-tooltip top :open-delay="300" color="grey darken-4">
+                        <v-btn slot="activator" small @click="$router.push({name: 'create-link-duplicate', params: { link: props.item, dup: props.item.id }})" flat icon color="green lighten-2" class="mx-0"><v-icon>mdi-content-duplicate</v-icon></v-btn>
+                        <span>Duplicate link</span>
+                      </v-tooltip>
+                      <v-tooltip top :open-delay="300" color="grey darken-4">
+                        <v-btn slot="activator" small @click="downloadCounterDialog = props.item" flat icon color="teal lighten-2" class="mx-0"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <span>Set download counter</span>
+                      </v-tooltip>
+                      <v-tooltip top :open-delay="300" color="grey darken-4">
+                        <v-btn slot="activator" small @click="deleteLink(props.item)" flat icon color="brown lighten-2" class="mx-0"><v-icon>mdi-delete</v-icon></v-btn>
+                        <span>Delete link</span>
+                      </v-tooltip>
                     </v-layout>
                   </td>
                 </tr>
@@ -52,9 +63,12 @@
 </template>
 
 <script>
+// import { mapState } from 'vuex'
+// import _ from 'lodash'
 import Link from '@/classes/link'
 import DownloadActive from '@/components/ui/DownloadActive'
 import LinkDialog from '@/components/ui/LinkDialog'
+import DownloadCounterDialog from '@/components/ui/DownloadCounterDialog'
 export default {
   name: 'Links',
   data () {
@@ -66,17 +80,18 @@ export default {
       headers: [
         { text: 'Hash', align: 'left', sortable: true, value: 'hash', width: '7%' },
         { text: 'Active', align: 'left', sortable: false, value: 'isActive', width: '7%' },
-        { text: 'Files', align: 'left', sortable: false, value: 'filesInlinepx', width: '42%' },
+        { text: 'Files', align: 'left', sortable: false, value: 'filesInlinepx', width: '38%' },
         { text: 'Email', align: 'left', sortable: true, value: 'email', width: '15%' },
         { text: 'Order', align: 'left', sortable: true, value: 'orderId', width: '8%' },
         { text: 'Author', align: 'left', sortable: true, value: 'createdBy', width: '8%' },
         { text: 'Created', align: 'left', sortable: true, value: 'createdAtRaw', width: '8%' },
-        { text: 'Control', align: 'left', sortable: false, width: '5%' }
+        { text: 'Control', align: 'left', sortable: false, width: '9%' }
       ],
       search: '',
       links: [],
       loading: true,
-      linkDataDialog: null
+      linkDataDialog: null,
+      downloadCounterDialog: null
     }
   },
   mounted () {
@@ -84,7 +99,7 @@ export default {
       .then((res) => {
         console.log('GET_LINKS', res.data)
         const linksData = res.data.data
-        this.links = linksData.map(it => new Link(it))
+        this.links = Link.reload(linksData)
         this.loading = false
       }).catch(err => {
         console.log(err)
@@ -98,17 +113,31 @@ export default {
           .then((res) => {
             console.log('DELETE_LINK', res.data)
             const linksData = res.data.data
-            this.links = linksData.map(it => new Link(it))
+            this.links = Link.reload(linksData)
             this.loading = false
           }).catch(err => {
             console.log('DELETE_LINK fail', err)
           })
       }
+    },
+    resetCounter (linkData, newCount) {
+      this.downloadCounterDialog = null
+      this.loading = true
+      this.$backend.links.resetCounter(linkData.id, newCount)
+        .then((res) => {
+          console.log('RESET_COUNTER', res.data)
+          const linkData = res.data.data
+          Link.update(linkData)
+          this.loading = false
+        }).catch(err => {
+          console.log('RESET_COUNTER fail', err)
+        })
     }
   },
   components: {
     'downlaod-active': DownloadActive,
-    'link-dialog': LinkDialog
+    'link-dialog': LinkDialog,
+    'download-counter-dialog': DownloadCounterDialog
   }
 }
 </script>
