@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <change-password-dialog v-model="changePassword" @close="changePassword = false"/>
     <v-navigation-drawer clipped fixed v-model="drawer" app>
       <v-list dense>
         <v-list-tile @click="$router.push(`/`)">
@@ -25,7 +26,17 @@
       <v-toolbar-title>MAGTOOL</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat disabled>USER: {{ $session.payload.username }} </v-btn>
+        <v-menu transition="slide-y-transition" bottom offset-y>
+          <v-btn flat slot="activator">USER: {{ $session.payload.username }} <v-icon small>mdi-chevron-down</v-icon> </v-btn>
+          <v-list>
+            <!-- <v-list-tile disabled @click="$router.push('/')">
+              <v-list-tile-title>Progile</v-list-tile-title>
+            </v-list-tile> -->
+            <v-list-tile @click="changePassword = true">
+              <v-list-tile-title>Change Password</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
         <v-btn flat @click="logout">LOGOUT</v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -39,10 +50,12 @@
 </template>
 
 <script>
+import ChangePasswordDialog from '@/components/ui/ChangePasswordDialog'
 export default {
   name: 'index',
   data () {
     return {
+      changePassword: false,
       drawer: false,
       msg: 'Welcome to Your Vue.js App'
     }
@@ -52,6 +65,9 @@ export default {
       this.$session.logout()
       this.$router.push('/login')
     }
+  },
+  components: {
+    'change-password-dialog': ChangePasswordDialog
   }
 }
 </script>

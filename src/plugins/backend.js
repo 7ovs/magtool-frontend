@@ -22,6 +22,8 @@ class Backend {
     const post = this.$http.post
     return {
       ping: () => post(url, { command: 'PING' }),
+      resetApache: () => post(url, { command: 'RESET_APACHE' }),
+      resetVarnish: () => post(url, { command: 'RESET_VARNISH' }),
       getLog: () => post(url, { command: 'GET_LOG' }),
       cleanCache: () => post(url, { command: 'CLEAN_CACHE' })
     }
@@ -36,6 +38,20 @@ class Backend {
       createLink: (linkData) => post(url, { command: 'CREATE_LINK', data: linkData }),
       deleteLink: (id) => post(url, { command: 'DELETE_LINK', id }),
       resetCounter: (id, newCount) => post(url, { command: 'RESET_COUNTER', id, count: newCount })
+    }
+  }
+
+  get profile () {
+    const url = this.getUrl('/profile')
+    const post = this.$http.post
+    return {
+      changePassword: (currentPassword, newPassword) => post(url, {
+        command: 'CHANGE_PASSWORD',
+        data: {
+          password: currentPassword,
+          new_password: newPassword
+        }
+      })
     }
   }
 }
