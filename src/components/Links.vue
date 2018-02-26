@@ -143,7 +143,7 @@ export default {
 </script>
 <style lang="sass">
 table.table
-  table-layout: fixed
+  table-layout: fixed !important
 
 table.table tbody td:first-child,
 table.table tbody td:not(:first-child),
@@ -153,19 +153,19 @@ table.table thead td:first-child,
 table.table thead td:not(:first-child),
 table.table thead th:first-child,
 table.table thead th:not(:first-child)
-  padding: 0 4px
+  padding: 0 4px !important
 table.table thead th
-  font-size: 14px
+  font-size: 14px !important
 table.table tbody td
-  font-size: 14px
-  overflow: hidden
-  white-space: nowrap
-  text-overflow: ellipsis
+  font-size: 14px !important
+  overflow: hidden !important
+  white-space: nowrap !important
+  text-overflow: ellipsis !important
 
-.ellipsis
-  margin: 0
-  overflow: hidden
-  white-space: nowrap
-  text-overflow: ellipsis
+// .ellipsis
+//   margin: 0
+//   overflow: hidden
+//   white-space: nowrap
+//   text-overflow: ellipsis
 
 </style>
