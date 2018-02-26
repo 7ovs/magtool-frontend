@@ -53,8 +53,8 @@ export default {
   data () {
     return {
       newLink: {
-        email: 'some@email.com',
-        orderId: '123',
+        email: '', // 'some@email.com',
+        orderId: '', // '123',
         downloadsLimit: 5
       },
       valid: true,
