@@ -8,7 +8,7 @@
       <v-card-text>
         <v-snackbar top :timeout="2000" color="success" v-model="clipboardSuccess">
           Copied!
-          <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+          <v-btn dark flat @click.native="clipboardSuccess = false">Close</v-btn>
         </v-snackbar>
         <v-snackbar top :timeout="3000" color="error" v-model="clipboardFail">
           Copy fail... :(
