@@ -14,7 +14,11 @@ import Backend from './plugins/backend'
 import Session from './plugins/session'
 import 'mdi/css/materialdesignicons.css'
 
-import config from '@/config.json'
+var config = {
+  ...require('@/config/config.json'),
+  ...require(`@/config/config.${process.env.NODE_ENV}.json`)
+}
+console.log(Vue.config.productionTip, config, Vue.config, process.env.NODE_ENV, process.env, process)
 store.commit('SET_CONFIG', config)
 
 Vue.use(VueAxios, axios)
@@ -24,7 +28,7 @@ Vue.use(VueClipboards)
 Vue.use(Backend, { store, http: axios })
 Vue.use(Session, { store, http: axios, backend: Vue.app.backend })
 
-Vue.config.productionTip = false
+Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
 /* eslint-disable no-new */
 new Vue({
