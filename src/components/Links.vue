@@ -2,6 +2,7 @@
   <v-container fluid class="text-xs-left">
     <link-dialog :link="linkDataDialog" :persistent="false" @close="linkDataDialog = null"/>
     <download-counter-dialog :link="downloadCounterDialog" :persistent="false" @submit="resetCounter" @close="downloadCounterDialog = null"/>
+    <mail-form-dialog v-model="emailDialog" @close="emailDialog = null"/>
     <v-layout column>
       <v-flex xs12>
         <v-card class="elevation-1 mb-3">
@@ -39,6 +40,10 @@
                   <td class="text-xs-left">
                     <v-layout row>
                       <v-tooltip top :open-delay="300" color="grey darken-4">
+                        <v-btn slot="activator" small @click="emailDialog = props.item" flat icon color="orange lighten-2" class="mx-0"><v-icon>mdi-email</v-icon></v-btn>
+                        <span>Email to user</span>
+                      </v-tooltip>
+                      <v-tooltip top :open-delay="300" color="grey darken-4">
                         <v-btn slot="activator" small @click="$router.push({name: 'create-link-duplicate', params: { link: props.item, dup: props.item.id }})" flat icon color="green lighten-2" class="mx-0"><v-icon>mdi-content-duplicate</v-icon></v-btn>
                         <span>Duplicate link</span>
                       </v-tooltip>
@@ -68,6 +73,7 @@
 import Link from '@/classes/link'
 import DownloadActive from '@/components/ui/DownloadActive'
 import LinkDialog from '@/components/ui/LinkDialog'
+import MailFormDialog from '@/components/ui/MailFormDialog'
 import DownloadCounterDialog from '@/components/ui/DownloadCounterDialog'
 export default {
   name: 'Links',
@@ -80,18 +86,19 @@ export default {
       headers: [
         { text: 'Hash', align: 'left', sortable: true, value: 'hash', width: '7%' },
         { text: 'Active', align: 'left', sortable: false, value: 'isActive', width: '7%' },
-        { text: 'Files', align: 'left', sortable: false, value: 'filesInlinepx', width: '38%' },
+        { text: 'Files', align: 'left', sortable: false, value: 'filesInlinepx', width: '36%' },
         { text: 'Email', align: 'left', sortable: true, value: 'email', width: '15%' },
         { text: 'Order', align: 'left', sortable: true, value: 'orderId', width: '8%' },
         { text: 'Author', align: 'left', sortable: true, value: 'createdBy', width: '8%' },
         { text: 'Created', align: 'left', sortable: true, value: 'createdAtRaw', width: '8%' },
-        { text: 'Control', align: 'left', sortable: false, width: '9%' }
+        { text: 'Control', align: 'left', sortable: false, width: '11%' }
       ],
       search: '',
       links: [],
       loading: true,
       linkDataDialog: null,
-      downloadCounterDialog: null
+      downloadCounterDialog: null,
+      emailDialog: null
     }
   },
   mounted () {
@@ -137,7 +144,8 @@ export default {
   components: {
     'downlaod-active': DownloadActive,
     'link-dialog': LinkDialog,
-    'download-counter-dialog': DownloadCounterDialog
+    'download-counter-dialog': DownloadCounterDialog,
+    'mail-form-dialog': MailFormDialog
   }
 }
 </script>

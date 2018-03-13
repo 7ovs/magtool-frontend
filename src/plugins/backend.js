@@ -41,6 +41,14 @@ class Backend {
     }
   }
 
+  get mailer () {
+    const url = this.getUrl('/mailer')
+    const post = this.$http.post
+    return {
+      sendMail: (data) => post(url, { command: 'SEND_MAIL', data })
+    }
+  }
+
   get profile () {
     const url = this.getUrl('/profile')
     const post = this.$http.post
