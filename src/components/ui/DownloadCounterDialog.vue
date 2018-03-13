@@ -7,7 +7,7 @@
         <v-text-field disabled label="Current download counter value" :value="link.downloadsCount"/>
       </v-card-text>
       <v-card-text>
-        <v-text-field label="New download counter value" :value="0" @input="onInputCounter" autofocus/>
+        <v-text-field label="New download counter value" :value="newCount" @input="onInputCounter" autofocus/>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

@@ -36,8 +36,8 @@ class Backend {
       getFilesList: () => post(url, { command: 'GET_FILES_LIST' }),
       getLinks: () => post(url, { command: 'GET_LINKS' }),
       createLink: (linkData) => post(url, { command: 'CREATE_LINK', data: linkData }),
-      deleteLink: (id) => post(url, { command: 'DELETE_LINK', id }),
-      resetCounter: (id, newCount) => post(url, { command: 'RESET_COUNTER', id, count: newCount })
+      deleteLink: (id) => post(url, { command: 'DELETE_LINK', data: id }),
+      resetCounter: (id, newCount) => post(url, { command: 'RESET_COUNTER', data: { id, count: newCount } })
     }
   }
 
